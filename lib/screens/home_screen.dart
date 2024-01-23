@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/screens/cart_screen.dart';
+import 'package:halal_app/screens/filters_screen.dart';
 import 'package:halal_app/screens/meal_screen.dart';
 import 'package:halal_app/screens/notifications_screen.dart';
 import 'package:halal_app/screens/widgets/cuisine_item.dart';
@@ -42,7 +43,9 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: (){                    Navigator.of(context).pushNamed(NotificationsScreen.routeName);
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(NotificationsScreen.routeName);
                           },
                           child: Container(
                             child: Image.asset(
@@ -67,8 +70,9 @@ class HomeScreen extends StatelessWidget {
                           width: 18,
                         ),
                         GestureDetector(
-                          onTap: (){
-                            Navigator.of(context).pushNamed(CartScreen.routeName);
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(CartScreen.routeName);
                           },
                           child: Container(
                             child: Image.asset(
@@ -114,9 +118,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(FiltersScreen.routeName);
                           },
-                          child: Image.asset('assets/images/home_images/Group 59.png',
+                          child: Image.asset(
+                              'assets/images/home_images/Group 59.png',
                               width: 65),
                         ),
                       ],
@@ -159,7 +166,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         FilledButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed(MealScreen.routeName);
+                            Navigator.of(context)
+                                .pushNamed(MealScreen.routeName);
                           },
                           child: Text(
                             'Buy Now',
