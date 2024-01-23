@@ -4,9 +4,10 @@ class Food {
   final String imageUrl;
   final double price;
   final String description;
-  var rating;
+  // var rating;
 
-  Food(this.rating,
+  Food(
+      // this.rating,
       {required this.id,
       required this.name,
       required this.imageUrl,

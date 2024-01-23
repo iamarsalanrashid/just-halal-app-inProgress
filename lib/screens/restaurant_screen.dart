@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/foodService.dart';
+import 'package:halal_app/core/providers/reviewService.dart';
 import 'package:halal_app/screens/cart_screen.dart';
 import 'package:halal_app/screens/info_screen.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/reviews_screen.dart';
 import 'package:halal_app/screens/widgets/custom_navigation_bar.dart';
 import 'package:halal_app/screens/widgets/restaurant_deal_item.dart';
+import 'package:provider/provider.dart';
 
 class RestaurantScreen extends StatefulWidget {
   static const routeName = '/restaurant-screen';
@@ -17,8 +20,11 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final BurgersData = Provider.of<FoodService>(context);
+    final ReviewData = Provider.of<ReviewService>(context);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return SafeArea(
