@@ -39,7 +39,7 @@ class _CuisinesScreenState extends State<CuisinesScreen> {
         bottomNavigationBar: Container(
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.amber,
+        color: Colors.white,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(
               16,
