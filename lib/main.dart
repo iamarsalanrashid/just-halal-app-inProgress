@@ -34,12 +34,14 @@ import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'app_color.dart';
+import 'core/providers/cartService.dart';
 import 'core/providers/reviewService.dart';
 
 void main() {
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: AppColor.primary,
     statusBarIconBrightness: Brightness.light,
@@ -55,7 +57,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers : [ChangeNotifierProvider.value(value: FoodService()),ChangeNotifierProvider.value(value: ReviewService())],
+      providers: [
+        ChangeNotifierProvider.value(value: FoodService()),
+        ChangeNotifierProvider.value(value: ReviewService()),
+        ChangeNotifierProvider.value(value: CartService()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -118,7 +124,7 @@ class MyApp extends StatelessWidget {
           CheckoutScreen.routeName: (ctx) => CheckoutScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
           PageSwitcher.routeName: (ctx) => PageSwitcher(incomingIndex: 0),
-          ChatScreen.routeName : (ctx) => ChatScreen(),
+          ChatScreen.routeName: (ctx) => ChatScreen(),
           FiltersScreen.routeName: (ctx) => FiltersScreen(),
         },
       ),

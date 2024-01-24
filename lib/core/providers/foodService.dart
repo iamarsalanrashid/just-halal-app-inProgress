@@ -14,7 +14,7 @@ class FoodService with ChangeNotifier {
 
   static Future<void> getMeals() async {
     final url = Uri.parse(
-        'https://just-halal-b48e6-default-rtdb.firebaseio.com/foodItems.json');
+        'https://just-halal-b48e6-default-rtdb.firebaseio.com/foodItems/burgers.json');
 
     try {
       final response = await http.get(url);
@@ -22,19 +22,32 @@ class FoodService with ChangeNotifier {
       print(extractedData);
       final List<Food> loadedItems = [];
 
-      extractedData.forEach((key, value) {
-        loadedItems.add(Food(
-            id: value['id'],
+      extractedData.forEach(
+        (key, value) {
+          loadedItems.add(Food(
+            id: key,
             name: value['name'],
             imageUrl: value['imageUrl'],
             price: value['price'],
-            description: value['description']));
-      print (value['imageUrl']);});
+            description: value['description'],
+          ));
+          print(value['imageUrl']);
+        },
+      );
 
       _items = loadedItems;
       print(_items[0].price);
     } catch (error) {
       print(error);
     }
+ // _items = [];
+
+
   }
+
+  void removeAllReviewItems() {
+    _items = [];
+  }
+
+
 }

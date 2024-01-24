@@ -4,6 +4,9 @@ import 'package:halal_app/screens/checkout_screen.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/restaurant_screen.dart';
 import 'package:halal_app/screens/widgets/cart_item.dart';
+import 'package:provider/provider.dart';
+
+import '../core/providers/cartService.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart-screen';
@@ -12,6 +15,9 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartData = Provider.of<CartService>(context,listen: true);
+    final cartItems = Provider.of<CartService>(context,listen: true).items.keys.toList();
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -143,11 +149,11 @@ class CartScreen extends StatelessWidget {
             height: 230,
             width: width,
             child: ListView.separated(
-              itemBuilder: (context, index) => CartItem(),
+              itemBuilder: (context, index) => CartItem(cartItems[index]),
               separatorBuilder: (context, index) => Divider(
                 thickness: 2,
               ),
-              itemCount: 3,
+              itemCount: cartData.items.length,
             ),
           ),
           Container(

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/cartService.dart';
+import 'package:halal_app/core/providers/foodService.dart';
+import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({super.key});
-
+final String itemId;
+  CartItem(this.itemId);
   @override
   Widget build(BuildContext context) {
+    final cartItems = Provider.of<CartService>(context).items;
+    final cartItem = cartItems['itemId'];
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(
@@ -23,7 +28,7 @@ class CartItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       4,
                     )),
-                child: Center(child: Text('1')),
+                child: Center(child: Text(cartItem.quantity.toString())),
               ),
               SizedBox(width: 12,),
               Image.asset('assets/images/Rectangle 25.png'),
@@ -32,7 +37,7 @@ class CartItem extends StatelessWidget {
               Container(
                 width: 60,
                 child: Text(
-                  'Original Chicken Burger',
+                  cartItem.name,
                   style: TextStyle(
                     fontSize: 10,
                   ),
@@ -41,7 +46,7 @@ class CartItem extends StatelessWidget {
             ],
           ),
           Text(
-            '+\$ 5.00',
+            '${cartItem.price}*${cartItem.quantity}',
             style: TextStyle(
               fontSize: 10,
               color: Colors.grey,

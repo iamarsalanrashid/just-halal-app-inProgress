@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/cartService.dart';
+import 'package:provider/provider.dart';
+
+import '../../core/providers/foodService.dart';
 
 class DealItem extends StatelessWidget {
-  const DealItem({super.key});
+  final String id;
+  final String name;
+  final double price;
+
+  DealItem(this.id, this.name, this.price);
 
   @override
   Widget build(BuildContext context) {
+    final foodData = Provider.of<FoodService>(context).items;
+    final cartData = Provider.of<CartService>(context);
+
+    final foodItem = foodData.firstWhere((food) => id == food.id);
     return Scaffold(
       body: Center(
         child: Card(
           child: Container(
-            height: 195,
-            width: 150,
+            height: 225,
+            width: 230,
             padding: EdgeInsets.all(8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -25,10 +37,12 @@ class DealItem extends StatelessWidget {
                   height: 3,
                 ),
                 Text(
-                  'Deal 1',
+                  name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
                 ),
                 SizedBox(
                   height: 3,
@@ -46,23 +60,29 @@ class DealItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$12.50',
+                      '$price',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container( alignment: Alignment.center,
-                      padding: EdgeInsets.all(3),
-                      height: 20,
-                      width: 20,
-                      child:
-                        Icon(
-                        Icons.add,
-                        color: Colors.white,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.primary,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
                       ),
-                      color: AppColor.primary,
-
-                    )
+                      child: GestureDetector(
+                        onTap: () {
+                          cartData.addItem(
+                              foodItem.id, foodItem.price, foodItem.name);
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

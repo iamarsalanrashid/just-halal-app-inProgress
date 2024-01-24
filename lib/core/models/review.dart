@@ -1,8 +1,8 @@
 class Review {
   final String item;
   final String customer; //access only name here
-  final int rating;
-  final DateTime time;
+  final double rating;
+  final String time;
   final String reviewText;
 
   Review({

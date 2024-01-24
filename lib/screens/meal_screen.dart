@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/cartService.dart';
 import 'package:halal_app/screens/cart_screen.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/widgets/deal_item.dart';
+import 'package:provider/provider.dart';
+
+import '../core/providers/foodService.dart';
+import '../core/providers/reviewService.dart';
 
 class MealScreen extends StatefulWidget {
   static const routeName = '/meal-screen';
@@ -57,6 +62,9 @@ class _MealScreenState extends State<MealScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final foodData = Provider.of<FoodService>(context).items;
+    final foodId = ModalRoute.of(context)!.settings.arguments as String;
+    final foodItem = foodData.firstWhere((food) => foodId == food.id);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -73,63 +81,66 @@ class _MealScreenState extends State<MealScreen> {
                 topLeft: Radius.circular(
                   16,
                 )),
-            border: Border(
-                top: BorderSide(
-                    color: Colors.grey,width: 3
-                )),
+            border: Border(top: BorderSide(color: Colors.grey, width: 3)),
           ),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                  icon: Icon(Icons.home_filled) , onPressed: () {
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PageSwitcher(incomingIndex: 0 ,
-                    ),
-                  ),
-                );
-              }),
+                  icon: Icon(Icons.home_filled),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PageSwitcher(
+                          incomingIndex: 0,
+                        ),
+                      ),
+                    );
+                  }),
               IconButton(
                 icon: Icon(Icons.library_books),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PageSwitcher(incomingIndex: 1,
+                      builder: (context) => PageSwitcher(
+                        incomingIndex: 1,
                       ),
                     ),
                   );
-
                 },
               ),
-              IconButton(icon: Icon(Icons.person), onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PageSwitcher(incomingIndex: 2,
-                    ),
-                  ),
-                );
-
-              }),
+              IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PageSwitcher(
+                          incomingIndex: 2,
+                        ),
+                      ),
+                    );
+                  }),
             ],
           ),
         ),
         body: ListView(
           shrinkWrap: true,
           children: [
-            Stack(
-              children: [Image.asset(
+            Stack(children: [
+              Image.asset(
                 'assets/images/Meals page.png',
                 height: 200,
                 width: width,
                 fit: BoxFit.fill,
-              ),Positioned(
+              ),
+              Positioned(
                 left: 16,
                 top: 30,
-                child: CircleAvatar(backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
                   child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -141,8 +152,7 @@ class _MealScreenState extends State<MealScreen> {
                   ),
                 ),
               ),
-               ]
-            ),
+            ]),
             Container(
               margin: EdgeInsets.only(
                 top: 20,
@@ -150,7 +160,7 @@ class _MealScreenState extends State<MealScreen> {
                 right: 16,
                 left: 16,
               ),
-              height: 80,
+              height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -158,12 +168,12 @@ class _MealScreenState extends State<MealScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Original Chicken Burger',
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        foodItem.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       Text(
-                        'From \$5.00',
+                        'From \$${foodItem.price}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -174,7 +184,9 @@ class _MealScreenState extends State<MealScreen> {
                   ),
                   Container(
                     child: Text(
-                      'Five of our world-famous Chiken Burger topped with hot sauce',
+                      foodItem.description,
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -293,7 +305,8 @@ class _MealScreenState extends State<MealScreen> {
                         Container(
                           width: 110,
                           // height: 80,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
                                 onTap: () {
@@ -308,7 +321,8 @@ class _MealScreenState extends State<MealScreen> {
                                 child: Container(
                                   width: 40,
                                   decoration: BoxDecoration(
-                                      shape: BoxShape.circle, color: Colors.grey),
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey),
                                   child: Icon(
                                     Icons.horizontal_rule,
                                     color: Colors.white,
@@ -337,7 +351,8 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(CartScreen.routeName);
                           },
                           child: Text(
                             'Add to Cart',
