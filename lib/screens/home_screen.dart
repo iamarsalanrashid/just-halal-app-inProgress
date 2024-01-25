@@ -21,16 +21,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final foodData = Provider.of<FoodService>(context).items;
     final ReviewData = Provider.of<ReviewService>(context).items;
-    final cartData = Provider.of<CartService>(context,listen: true);
+    final cartData = Provider.of<CartService>(context, listen: true);
 
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print(height);
+    print(cartData.items.keys.toList().length);
     print(width);
     return SafeArea(
       child: Scaffold(
         body: RefreshIndicator(
-          onRefresh: ()=> FoodService.getMeals(),
+          onRefresh: () => FoodService.getMeals(),
           child: ListView(
             physics: BouncingScrollPhysics(),
             shrinkWrap: true,
@@ -57,8 +57,16 @@ class HomeScreen extends StatelessWidget {
                               Navigator.of(context)
                                   .pushNamed(NotificationsScreen.routeName);
                             },
-                            child:  Badge(backgroundColor: AppColor.primary,label: Text('3'),child: Icon(Icons.notifications_none_rounded,size: 36,),),
-                          ),SizedBox(
+                            child: Badge(
+                              backgroundColor: AppColor.primary,
+                              label: Text('3'),
+                              child: Icon(
+                                Icons.notifications_none_rounded,
+                                // size: 36,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
                             width: 18,
                           ),
                           Container(
@@ -83,9 +91,14 @@ class HomeScreen extends StatelessWidget {
                               Navigator.of(context)
                                   .pushNamed(CartScreen.routeName);
                             },
-                            child: Badge(backgroundColor: AppColor.primary,label: Text(
-                                '${cartData.itemsCount}'),child: Icon(Icons.shopping_bag_outlined,size: 34,),),
-
+                            child: Badge(
+                              backgroundColor: AppColor.primary,
+                              label: Text(cartData.items.keys.toList().length.toString()),
+                              child: Icon(
+                                Icons.shopping_bag_outlined,
+                                // size: 34,
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -100,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 270,
+                            width: 250,
                             child: TextField(
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -166,7 +179,8 @@ class HomeScreen extends StatelessWidget {
                             width: 150,
                             child: Text(
                               'Special deal for mothers day',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
                           SizedBox(
@@ -196,7 +210,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Positioned(
                     top: -25,
-                    child: Image.asset('assets/images/home_images/pngwing 1.png'),
+                    child:
+                        Image.asset('assets/images/home_images/pngwing 1.png'),
                   ),
                 ],
               ),
@@ -219,21 +234,22 @@ class HomeScreen extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(MealScreen.routeName,arguments: foodData[index].id);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          right: 16,
-                        ),
-                        height: 220,
-                        width: 160,
-                        child: DealItem(foodData[index].id,foodData[index].name,foodData[index].price
-                            // cartData.addItem(foodData[index].id,foodData[index].name,foodData[index].price)
-                        ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(MealScreen.routeName,
+                          arguments: foodData[index].id);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        right: 16,
                       ),
+                      height: 220,
+                      width: 160,
+                      child: DealItem(foodData[index].id, foodData[index].name,
+                          foodData[index].price
+                          // cartData.addItem(foodData[index].id,foodData[index].name,foodData[index].price)
+                          ),
                     ),
-
+                  ),
                   itemCount: foodData.length,
                 ),
               ),

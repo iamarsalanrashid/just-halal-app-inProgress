@@ -53,18 +53,19 @@ class ActiveOrdersScreenWidget extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      SizedBox(
-                        width: 94,
-                      ),
-                      Text(
-                        '\$7.00 ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColor.primary,
-                          fontWeight: FontWeight.bold,
+                      ), SizedBox(
+                          width: 55,
                         ),
-                      ),
+
+                     Text(
+                          '\$7.00 ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColor.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
                     ],
                   ),
                   SizedBox(
