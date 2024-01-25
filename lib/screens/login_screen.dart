@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/core/providers/foodService.dart';
-import 'package:halal_app/core/providers/reviewService.dart';
 import 'package:halal_app/screens/forgot_password_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
 import 'package:halal_app/screens/sign_up_screen.dart';
@@ -108,9 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               onPressed: ()  {
                 Navigator.of(context).pushNamed(LocationScreen.routeName);
-
-                FoodService.getMeals();
-                ReviewService.getReviews();
               },
               child: Text(
                 'Sign In',

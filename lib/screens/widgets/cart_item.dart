@@ -42,11 +42,11 @@ class CartItem extends StatelessWidget {
                 width: 12,
               ),
               Container(
-                width: 60,
+                width: 90,
                 child: Text(
                   cartItemName,
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 14,
                   ),
                 ),
               )
@@ -55,7 +55,7 @@ class CartItem extends StatelessWidget {
           Text(
             '${cartItemPrice*cartItemQuantity}',
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 14,
               color: Colors.grey,
             ),
           )

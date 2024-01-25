@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
-import 'package:halal_app/core/providers/foodService.dart';
-import 'package:halal_app/core/providers/reviewService.dart';
 import 'package:halal_app/screens/restaurant_screen.dart';
-import 'package:provider/provider.dart';
 
 class CuisineScreenItem extends StatelessWidget {
   const CuisineScreenItem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final foodData = Provider.of<FoodService>(context).items;
-    final ReviewData = Provider.of<ReviewService>(context).items;
-
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Center(
+        child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -47,14 +42,14 @@ class CuisineScreenItem extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  foodData[0].name,
+                                  'Rina\'s Kitchenette',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                   ),
                                 ),
                                 Text(
-                                  '${ReviewData[0].rating}',
+                                  '4.2(4000+)',
                                   style: TextStyle(
                                     fontSize: 12,
                                   ),
@@ -129,14 +124,14 @@ class CuisineScreenItem extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  foodData[1].name,
+                                  'For The Table',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                   ),
                                 ),
                                 Text(
-                                  '${ReviewData[1].rating}',
+                                  '4.0(4000+)',
                                   style: TextStyle(
                                     fontSize: 12,
                                   ),
@@ -211,14 +206,14 @@ class CuisineScreenItem extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  foodData[2].name,
+                                  'Daily Deli CO',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                   ),
                                 ),
                                 Text(
-                                  '${ReviewData[2].rating}',
+                                  '4.3(5000+)',
                                   style: TextStyle(
                                     fontSize: 12,
                                   ),
@@ -266,6 +261,7 @@ class CuisineScreenItem extends StatelessWidget {
             ],
           ),
         ),
+      ),
     );
   }
 }

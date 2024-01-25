@@ -62,7 +62,7 @@ class CartService with ChangeNotifier {
     }
     print(_items.values.toList()[0].quantity.toString());
     print(timestamp);
-  }
+  notifyListeners();}
 
   Future<void> fetchAndSetCartItems() async {
     final url = Uri.parse(
