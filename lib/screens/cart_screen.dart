@@ -8,15 +8,38 @@ import 'package:provider/provider.dart';
 
 import '../core/providers/cartService.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart-screen';
 
   const CartScreen({super.key});
 
   @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  bool _isLoading = false;
+  bool _isInit  = false;
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInit)
+setState(() {
+  _isLoading = true;
+});
+    Provider.of<CartService>(context).fetchAndSetCartItems().then((_) {setState(() {
+      _isLoading = false;
+    });});
+ _isInit = true;
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    final cartData = Provider.of<CartService>(context,listen: true);
-    final cartItems = Provider.of<CartService>(context,listen: true).items.keys.toList();
+    final cartData = Provider.of<CartService>(context, listen: true);
+    final cartItems = Provider.of<CartService>(context, listen: true).items;
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -32,51 +55,51 @@ class CartScreen extends StatelessWidget {
               topLeft: Radius.circular(
                 16,
               )),
-          border: Border(
-              top: BorderSide(
-                  color: Colors.grey,width: 3
-              )),
+          border: Border(top: BorderSide(color: Colors.grey, width: 3)),
         ),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-                icon: Icon(Icons.home_filled) , onPressed: () {
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PageSwitcher(incomingIndex: 0 ,
-                  ),
-                ),
-              );
-            }),
+                icon: Icon(Icons.home_filled),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PageSwitcher(
+                        incomingIndex: 0,
+                      ),
+                    ),
+                  );
+                }),
             IconButton(
               icon: Icon(Icons.library_books),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PageSwitcher(incomingIndex: 1,
+                    builder: (context) => PageSwitcher(
+                      incomingIndex: 1,
                     ),
                   ),
                 );
-
               },
             ),
-            IconButton(icon: Icon(Icons.person), onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PageSwitcher(incomingIndex: 2,
-                  ),
-                ),
-              );
-
-            }),
+            IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PageSwitcher(
+                        incomingIndex: 2,
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
-
       appBar: AppBar(
         elevation: 1,
         shadowColor: Colors.grey,
@@ -92,11 +115,12 @@ class CartScreen extends StatelessWidget {
             Navigator.of(context).pop();
           },
           icon: Icon(
-            Icons.close_rounded
-            ,
+            Icons.close_rounded,
             color: AppColor.primary,
-          ),), ),
-      body: ListView(
+          ),
+        ),
+      ),
+      body: _isLoading? Center(child: CircularProgressIndicator(),) : ListView(
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         children: [
@@ -148,13 +172,25 @@ class CartScreen extends StatelessWidget {
             ),
             height: 230,
             width: width,
-            child: ListView.separated(
-              itemBuilder: (context, index) => CartItem(cartItems[index]),
-              separatorBuilder: (context, index) => Divider(
-                thickness: 2,
-              ),
-              itemCount: cartData.items.length,
-            ),
+            child: cartItems.isEmpty
+                ? Center(
+                    child: Text(
+                      'No Items present in the cart!',
+                    ),
+                  )
+                : ListView.separated(
+                    itemBuilder: (context, index) => CartItem(
+                      cartItemId: cartItems.keys.toList()[index],
+                      cartItemQuantity:
+                          cartItems.values.toList()[index].quantity,
+                      cartItemName: cartItems.values.toList()[index].title,
+                      cartItemPrice: cartItems.values.toList()[index].price,
+                    ),
+                    separatorBuilder: (context, index) => Divider(
+                      thickness: 2,
+                    ),
+                    itemCount: cartData.items.length,
+                  ),
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16),

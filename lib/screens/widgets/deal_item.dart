@@ -75,7 +75,7 @@ class DealItem extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           cartData.addItem(
-                              foodItem.id, foodItem.price, foodItem.name);
+                              itemId: foodItem.id, itemPrice:foodItem.price, itemTitle: foodItem.name);
                         },
                         child: Icon(
                           Icons.add,

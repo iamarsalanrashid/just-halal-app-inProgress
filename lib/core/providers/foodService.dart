@@ -31,18 +31,14 @@ class FoodService with ChangeNotifier {
             price: value['price'],
             description: value['description'],
           ));
-          print(value['imageUrl']);
         },
       );
 
       _items = loadedItems;
-      print(_items[0].price);
     } catch (error) {
       print(error);
     }
  // _items = [];
-
-
   }
 
   void removeAllReviewItems() {

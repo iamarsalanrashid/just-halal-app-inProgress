@@ -12,26 +12,29 @@ class CartService with ChangeNotifier {
   }
 
   Future<void> addItem(
-      String itemId, double itemPrice, String itemTitle) async {
+      {required String itemId,
+      required double itemPrice,
+      required String itemTitle}) async {
     final url = Uri.parse(
-        'https://just-halal-b48e6-default-rtdb.firebaseio.com/cart.json');
-    final timestamp = DateTime.now().toString();
+        'https://just-halal-b48e6-default-rtdb.firebaseio.com/cart/$itemId.json');
+    final timestamp = DateTime.now().toIso8601String();
     try {
       if (_items.containsKey(itemId)) {
-        final updateCartUrl = Uri.parse(
-            'https://just-halal-b48e6-default-rtdb.firebaseio.com/cart/$itemId.json');
-
         _items.update(itemId, (existingItem) {
-          Cart(
-              id: existingItem.id,
+          return Cart(
+              id: timestamp,
               price: existingItem.price,
               title: existingItem.title,
               quantity: existingItem.quantity + 1);
         });
-
         final updateCartResponse = http.patch(
-          updateCartUrl,
-          body: json.encode({'quantity': _items[itemId].quantity}),
+          url,
+          body: json.encode({
+            'id': timestamp,
+            'price': itemPrice,
+            'title': itemTitle,
+            'quantity': _items[itemId].quantity
+          }),
         );
       } else {
         _items.putIfAbsent(
@@ -43,7 +46,7 @@ class CartService with ChangeNotifier {
             quantity: 1,
           ),
         );
-        final response = http.post(
+        final response = http.patch(
           url,
           body: json.encode({
             'id': timestamp,
@@ -57,7 +60,33 @@ class CartService with ChangeNotifier {
     } catch (error) {
       print(error);
     }
-    print(_items.length);
+    print(_items.values.toList()[0].quantity.toString());
+    print(timestamp);
+  }
+
+  Future<void> fetchAndSetCartItems() async {
+    final url = Uri.parse(
+        'https://just-halal-b48e6-default-rtdb.firebaseio.com/cart.json');
+    try {
+      final response = await http.get(url);
+      final extractedCartProducts =
+          json.decode(response.body) as Map<String, dynamic>;
+      final Map<String, dynamic> loadedCartProducts = {};
+      extractedCartProducts.forEach((foodId, cartFoodValues) {
+        loadedCartProducts[foodId] = Cart(
+            id: cartFoodValues['id'],
+            price: cartFoodValues['price'],
+            title: cartFoodValues['title'],
+            quantity: cartFoodValues['quantity']);
+      });
+
+      _items = loadedCartProducts;
+
+      print(
+          ' this is the list of cartitems in memmory ${loadedCartProducts.keys.toList()}');
+    } catch (error) {
+      print(error);
+    }
   }
 
   int get itemsCount {

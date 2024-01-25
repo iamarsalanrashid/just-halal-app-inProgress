@@ -5,12 +5,16 @@ import 'package:halal_app/core/providers/foodService.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
-final String itemId;
-  CartItem(this.itemId);
+  final String cartItemId;
+  final int cartItemQuantity;
+  final String cartItemName;
+  final double cartItemPrice;
+
+  CartItem({required this.cartItemId,required this.cartItemName,required this.cartItemQuantity,
+     required this.cartItemPrice});
+
   @override
   Widget build(BuildContext context) {
-    final cartItems = Provider.of<CartService>(context).items;
-    final cartItem = cartItems['itemId'];
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(
@@ -28,16 +32,19 @@ final String itemId;
                     borderRadius: BorderRadius.circular(
                       4,
                     )),
-                child: Center(child: Text(cartItem.quantity.toString())),
+                child: Center(child: Text(cartItemQuantity.toString())),
               ),
-              SizedBox(width: 12,),
+              SizedBox(
+                width: 12,
+              ),
               Image.asset('assets/images/Rectangle 25.png'),
-              SizedBox(width: 12,),
-
+              SizedBox(
+                width: 12,
+              ),
               Container(
                 width: 60,
                 child: Text(
-                  cartItem.name,
+                  cartItemName,
                   style: TextStyle(
                     fontSize: 10,
                   ),
@@ -46,7 +53,7 @@ final String itemId;
             ],
           ),
           Text(
-            '${cartItem.price}*${cartItem.quantity}',
+            '${cartItemPrice*cartItemQuantity}',
             style: TextStyle(
               fontSize: 10,
               color: Colors.grey,
