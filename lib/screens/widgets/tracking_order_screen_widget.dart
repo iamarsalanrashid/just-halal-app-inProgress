@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/screens/chat_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_color.dart';
+import '../../core/providers/ordersService.dart';
 
 class TrackingOrderScreenWidget extends StatelessWidget {
   const TrackingOrderScreenWidget({super.key});
@@ -202,7 +204,9 @@ class TrackingOrderScreenWidget extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Provider.of<OrdersService>(context).cancelOrder(orderId);
+                    },
                     child: Text(
                       'Cancel Orders',
                       style: TextStyle(

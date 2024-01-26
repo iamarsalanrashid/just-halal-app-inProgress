@@ -19,11 +19,10 @@ class MealScreen extends StatefulWidget {
 }
 
 class _MealScreenState extends State<MealScreen> {
-  int count = 0;
+  int count = 1;
 
   Widget itemRow(String name) {
     bool? _isChecked = true;
-
     return Container(
       height: 40,
       child: Row(
@@ -63,8 +62,10 @@ class _MealScreenState extends State<MealScreen> {
   @override
   Widget build(BuildContext context) {
     final foodData = Provider.of<FoodService>(context).items;
+
     final foodId = ModalRoute.of(context)!.settings.arguments as String;
     final foodItem = foodData.firstWhere((food) => foodId == food.id);
+    final cartData = Provider.of<CartService>(context);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -352,6 +353,7 @@ class _MealScreenState extends State<MealScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
+                            cartData.addItem(itemId: foodId, itemPrice: foodItem.price, itemTitle: foodItem.name,itemQuantity: count);
                             Navigator.of(context).pushNamed(CartScreen.routeName);
                           },
                           child: Text(

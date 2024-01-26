@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/ordersService.dart';
 import 'package:halal_app/screens/checkout_screen.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/restaurant_screen.dart';
 import 'package:halal_app/screens/widgets/cart_item.dart';
 import 'package:provider/provider.dart';
 
+import '../core/models/cart.dart';
 import '../core/providers/cartService.dart';
 
 class CartScreen extends StatefulWidget {
@@ -39,7 +41,9 @@ setState(() {
   @override
   Widget build(BuildContext context) {
     final cartData = Provider.of<CartService>(context, listen: true);
-    final cartItems = Provider.of<CartService>(context, listen: true).items;
+    final Map<String , Cart > cartItems = Provider.of<CartService>(context, listen: true).items;
+    final orderData = Provider.of<OrdersService>(context);
+
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -219,7 +223,9 @@ setState(() {
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: FilledButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(CheckoutScreen.routeName);
+                orderData.fetchandSetOrders();
+// orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice);
+                // Navigator.of(context).pushNamed(CheckoutScreen.routeName);
               },
               child: Text(
                 'Confirm Payment and Address',

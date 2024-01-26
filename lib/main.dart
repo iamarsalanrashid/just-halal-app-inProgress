@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:halal_app/core/providers/foodService.dart';
+import 'package:halal_app/core/providers/ordersService.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/cart_screen.dart';
 import 'package:halal_app/screens/chat_screen.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: FoodService()),
         ChangeNotifierProvider.value(value: ReviewService()),
         ChangeNotifierProvider.value(value: CartService()),
+        ChangeNotifierProvider.value(value: OrdersService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

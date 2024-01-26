@@ -5,16 +5,16 @@ import 'package:http/http.dart' as http;
 import 'package:halal_app/core/models/cart.dart';
 
 class CartService with ChangeNotifier {
-  Map<String, dynamic> _items = {};
+  Map<String, Cart> _items = {};
 
-  Map<String, dynamic> get items {
+  Map<String, Cart> get items {
     return {..._items};
   }
 
   Future<void> addItem(
       {required String itemId,
       required double itemPrice,
-      required String itemTitle}) async {
+      required String itemTitle, int itemQuantity = 1}) async {
     final url = Uri.parse(
         'https://just-halal-b48e6-default-rtdb.firebaseio.com/cart/$itemId.json');
     final timestamp = DateTime.now().toIso8601String();
@@ -25,7 +25,7 @@ class CartService with ChangeNotifier {
               id: timestamp,
               price: existingItem.price,
               title: existingItem.title,
-              quantity: existingItem.quantity + 1);
+              quantity: existingItem.quantity + itemQuantity);
         });
         final updateCartResponse = http.patch(
           url,
@@ -33,7 +33,7 @@ class CartService with ChangeNotifier {
             'id': timestamp,
             'price': itemPrice,
             'title': itemTitle,
-            'quantity': _items[itemId].quantity
+            'quantity': _items[itemId]!.quantity
           }),
         );
       } else {
@@ -43,7 +43,7 @@ class CartService with ChangeNotifier {
             id: timestamp,
             price: itemPrice as double,
             title: itemTitle,
-            quantity: 1,
+            quantity: itemQuantity,
           ),
         );
         final response = http.patch(
@@ -52,7 +52,7 @@ class CartService with ChangeNotifier {
             'id': timestamp,
             'price': itemPrice,
             'title': itemTitle,
-            'quantity': 1,
+            'quantity': itemQuantity,
           }),
         );
         print(response);
@@ -71,7 +71,7 @@ class CartService with ChangeNotifier {
       final response = await http.get(url);
       final extractedCartProducts =
           json.decode(response.body) as Map<String, dynamic>;
-      final Map<String, dynamic> loadedCartProducts = {};
+      final Map<String, Cart> loadedCartProducts = {};
       extractedCartProducts.forEach((foodId, cartFoodValues) {
         loadedCartProducts[foodId] = Cart(
             id: cartFoodValues['id'],
@@ -87,6 +87,13 @@ class CartService with ChangeNotifier {
     } catch (error) {
       print(error);
     }
+  }
+
+  double get totalPrice {
+   var total = 0.0;
+    _items.values.toList().forEach((ci) {
+      total += (ci.quantity * ci.price);});
+    return total;
   }
 
   int get itemsCount {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/ordersService.dart';
 import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/widgets/order_summary_widget.dart';
 import 'package:halal_app/screens/widgets/orders_chat_widget.dart';
 import 'package:halal_app/screens/widgets/tracking_order_screen_widget.dart';
+import 'package:provider/provider.dart';
 
 class TrackingOrderNavigationScreen extends StatelessWidget {
   static const routeName = '/tracking-order-navigation-screen';
@@ -12,6 +14,8 @@ class TrackingOrderNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderId = ModalRoute.of(context)!.settings.arguments as String;
+    final orderItem = Provider.of<OrdersService>(context).items.firstWhere((item) => item.orderId == orderId);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return DefaultTabController(
