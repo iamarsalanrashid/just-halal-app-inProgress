@@ -10,8 +10,6 @@ import 'package:provider/provider.dart';
 class TrackingOrderNavigationScreen extends StatefulWidget {
   static const routeName = '/tracking-order-navigation-screen';
 
-  const TrackingOrderNavigationScreen({super.key});
-
   @override
   State<TrackingOrderNavigationScreen> createState() =>
       _TrackingOrderNavigationScreenState();

@@ -186,6 +186,8 @@ class _PaymentFormScreenState extends State<PaymentFormScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice);
+                          orderData.fetchandSetOrders();
+                          // cartData.MakeCartEmpty();
                           Navigator.of(context).pushNamed(TrackingOrderNavigationScreen.routeName);
                         },
                         child: Text(

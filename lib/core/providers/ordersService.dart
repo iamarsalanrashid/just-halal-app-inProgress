@@ -71,13 +71,14 @@ class OrdersService with ChangeNotifier {
                         quantity: ci['quantity']))
                     .toList(),
                 price: orderItem['price'],
-                timeStamp: DateTime.parse(orderItem['timeStamp'])));
+                timeStamp: DateTime.parse(orderItem['timeStamp']),),);
       });
 
       _items = loadedOrders;
+      print(extractedData);
       print('the length of orderitems is ${_items.length}');
     } catch (error) {
-      print(error);
+      print('error in fetching order: $error');
     }
   }
 
