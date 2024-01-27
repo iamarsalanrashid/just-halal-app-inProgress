@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -95,6 +96,16 @@ class CartService with ChangeNotifier {
       total += (ci.quantity * ci.price);});
     return total;
   }
+Future<void> MakeCartEmpty ( ) async {
+    _items = {};
+    final url = Uri.parse('https://just-halal-b48e6-default-rtdb.firebaseio.com/cart.json');
+    try {
+      final  response = await http.delete(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      print(error);
+    }
+}
 
   int get itemsCount {
     return _items.length;

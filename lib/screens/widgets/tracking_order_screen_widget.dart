@@ -3,13 +3,17 @@ import 'package:halal_app/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_color.dart';
+import '../../core/models/order.dart';
 import '../../core/providers/ordersService.dart';
 
 class TrackingOrderScreenWidget extends StatelessWidget {
-  const TrackingOrderScreenWidget({super.key});
+  Order orderItem;
+   TrackingOrderScreenWidget(this.orderItem);
 
   @override
   Widget build(BuildContext context) {
+
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Stack(
@@ -117,7 +121,7 @@ class TrackingOrderScreenWidget extends StatelessWidget {
                   height: 6,
                 ),
                 Text(
-                  'Order# 90923445691',
+                  'Order# ${orderItem.orderId}',
                   style: TextStyle(
                     fontSize: 12,
                   ),

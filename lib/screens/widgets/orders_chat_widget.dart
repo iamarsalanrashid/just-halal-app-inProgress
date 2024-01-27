@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../core/models/order.dart';
+
 class OrderChatWidget extends StatelessWidget {
-  const OrderChatWidget({super.key});
+  // Order orderItem;
+  //  OrderChatWidget(this.orderItem);
 
   @override
   Widget build(BuildContext context) {

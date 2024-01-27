@@ -223,9 +223,7 @@ setState(() {
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: FilledButton(
               onPressed: () {
-                orderData.fetchandSetOrders();
-// orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice);
-                // Navigator.of(context).pushNamed(CheckoutScreen.routeName);
+                Navigator.of(context).pushNamed(CheckoutScreen.routeName);
               },
               child: Text(
                 'Confirm Payment and Address',

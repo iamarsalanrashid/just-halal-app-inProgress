@@ -35,6 +35,7 @@ import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'app_color.dart';
+import 'core/models/order.dart';
 import 'core/providers/cartService.dart';
 import 'core/providers/reviewService.dart';
 
@@ -53,6 +54,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
 
   // This widget is the root of your application.
   @override
@@ -103,8 +105,7 @@ class MyApp extends StatelessWidget {
           ReviewsScreen.routeName: (ctx) => ReviewsScreen(),
           RestaurantScreen.routeName: (ctx) => RestaurantScreen(),
           ProfileScreen.routeName: (ctx) => ProfileScreen(),
-          ProcessedOrdersNavigationScreen.routeName: (ctx) =>
-              ProcessedOrdersNavigationScreen(),
+         // ProcessedOrdersNavigationScreen.routeName: (ctx) =>ProcessedOrdersNavigationScreen(),
           PaymentMethodScreen.routeName: (ctx) => PaymentMethodScreen(),
           PaymentFormScreen.routeName: (ctx) => PaymentFormScreen(),
           OtpVerificationScreen.routeName: (ctx) => OtpVerificationScreen(),

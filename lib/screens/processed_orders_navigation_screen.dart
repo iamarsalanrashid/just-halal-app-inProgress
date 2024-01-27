@@ -4,11 +4,13 @@ import 'package:halal_app/screens/widgets/order_summary_widget.dart';
 import 'package:halal_app/screens/widgets/orders_chat_widget.dart';
 
 import '../app_color.dart';
+import '../core/models/order.dart';
 
 class ProcessedOrdersNavigationScreen extends StatelessWidget {
   static const routeName = '/processed-orders-screen';
 
-  ProcessedOrdersNavigationScreen({super.key});
+  Order orderItem;
+  ProcessedOrdersNavigationScreen(this.orderItem);
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +153,7 @@ class ProcessedOrdersNavigationScreen extends StatelessWidget {
               height: height,
               width: width,
               child: TabBarView(
-                  children: [OrderSummaryWidget(), OrderChatWidget()]),
+                  children: [OrderSummaryWidget(orderItem), OrderChatWidget()]),
             ),
           ],
         ),

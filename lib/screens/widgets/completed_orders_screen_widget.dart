@@ -3,9 +3,12 @@ import 'package:halal_app/screens/orders_navigation_screen.dart';
 import 'package:halal_app/screens/processed_orders_navigation_screen.dart';
 
 import '../../app_color.dart';
+import '../../core/models/order.dart';
 
 class CompletedOrdersScreenWidget extends StatelessWidget {
-  const CompletedOrdersScreenWidget({super.key});
+
+  // Order orderItem;
+  // CompletedOrdersScreenWidget(this.orderItem);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,11 @@ class CompletedOrdersScreenWidget extends StatelessWidget {
       ),
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => GestureDetector(
-        onTap: (){
-          Navigator.of(context).pushNamed(ProcessedOrdersNavigationScreen.routeName);
-          },
+        onTap: () {
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) =>
+          //         ProcessedOrdersNavigationScreen()));
+        },
         child: Container(
           margin: EdgeInsets.only(
             top: 16,
@@ -36,7 +41,14 @@ class CompletedOrdersScreenWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CircleAvatar(backgroundColor: AppColor.primary,child: Icon(Icons.check_rounded,color: Colors.white,size: 38,),),
+              CircleAvatar(
+                backgroundColor: AppColor.primary,
+                child: Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 38,
+                ),
+              ),
               SizedBox(
                 width: 14,
               ),
@@ -95,4 +107,3 @@ class CompletedOrdersScreenWidget extends StatelessWidget {
     );
   }
 }
-

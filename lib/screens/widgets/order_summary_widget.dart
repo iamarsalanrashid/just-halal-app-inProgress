@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/models/order.dart';
 
 class OrderSummaryWidget extends StatelessWidget {
   List<String> orderSummarytitles = [
@@ -9,16 +10,17 @@ class OrderSummaryWidget extends StatelessWidget {
     'Tax',
     'Delivery Time'
   ];
-  List<String> orderSummaryValues = [
-    '\$1.00',
+
+ Order orderItem;
+ OrderSummaryWidget(this.orderItem);
+  @override
+  Widget build(BuildContext context) {List<String> orderSummaryValues = [
+    orderItem.price.toString(),
     '\$1.00',
     '\$1.00',
     '\$1.00',
     '30 min'
   ];
-
-  @override
-  Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 22),
@@ -49,24 +51,25 @@ class OrderSummaryWidget extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Original Chicken Burger',
-                      style: TextStyle(
-                        fontSize: 12,
+              for (int i = 0; i <orderItem.cartItems.length ; i++)  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${orderItem.cartItems[i].title} * ${orderItem.cartItems[i].quantity}',
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '\$1.00',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        '\$${orderItem.cartItems[i].price*orderItem.cartItems[i].quantity}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+
                 SizedBox(
                   height: 10,
                 ),

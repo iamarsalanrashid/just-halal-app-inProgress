@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
+import 'package:halal_app/core/providers/cartService.dart';
 import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../core/models/cart.dart';
+import '../core/providers/ordersService.dart';
 
 class PaymentFormScreen extends StatefulWidget {
   static const routeName = '/payment-form-screen';
@@ -12,8 +17,13 @@ class PaymentFormScreen extends StatefulWidget {
 }
 
 class _PaymentFormScreenState extends State<PaymentFormScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final orderData = Provider.of<OrdersService>(context);
+    final cartData = Provider.of<CartService>(context);
+    final cartItems = cartData.items;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1,shadowColor: Colors.grey,
@@ -175,8 +185,8 @@ class _PaymentFormScreenState extends State<PaymentFormScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
+                          orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice);
                           Navigator.of(context).pushNamed(TrackingOrderNavigationScreen.routeName);
-
                         },
                         child: Text(
                           'Pay Now',
