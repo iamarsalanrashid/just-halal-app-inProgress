@@ -17,6 +17,7 @@ class PaymentFormScreen extends StatefulWidget {
 }
 
 class _PaymentFormScreenState extends State<PaymentFormScreen> {
+bool  _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -185,12 +186,17 @@ class _PaymentFormScreenState extends State<PaymentFormScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice);
-                          orderData.fetchandSetOrders();
-                          // cartData.MakeCartEmpty();
-                          Navigator.of(context).pushNamed(TrackingOrderNavigationScreen.routeName);
-                        },
-                        child: Text(
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          orderData.addOrder(cartItems.values.toList() as List<Cart>, cartData.totalPrice).then((value){setState(() {
+                            _isLoading = false;
+                            cartData.MakeCartEmpty();
+                            final id = orderData.items[0].orderId;
+                            Navigator.of(context).pushNamed(TrackingOrderNavigationScreen.routeName,arguments: id );
+                          });});
+                            },
+                        child: _isLoading ? CircularProgressIndicator() :Text(
                           'Pay Now',
                           style: TextStyle(color: Colors.white),
                         ),

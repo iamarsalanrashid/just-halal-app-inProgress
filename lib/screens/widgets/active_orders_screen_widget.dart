@@ -92,7 +92,7 @@ class _ActiveOrdersScreenWidgetState extends State<ActiveOrdersScreenWidget> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 50,
+                                      width: 40,
                                     ),
                                     Text(
                                       '\$${orderitems[index].price}',
@@ -129,7 +129,7 @@ class _ActiveOrdersScreenWidgetState extends State<ActiveOrdersScreenWidget> {
                         ),
                       ),
                     ),
-                    itemCount: 3,
+                    itemCount: orderitems.length,
                   );
   }
 }

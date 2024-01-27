@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/app_color.dart';
 import 'package:halal_app/screens/orders_navigation_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../../core/providers/ordersService.dart';
 import '../processed_orders_navigation_screen.dart';
 
 class CancelOrdersScreenWidget extends StatelessWidget {
@@ -9,7 +11,9 @@ class CancelOrdersScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    final orderData = Provider.of<OrdersService>(context);
+    final cancelledOrders = orderData.cancelledOrders;
+    return cancelledOrders.isEmpty ? Center(child: Text('No Cancelled Orders Yet!'),): ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(
         horizontal: 16,
@@ -55,7 +59,7 @@ class CancelOrdersScreenWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Order No# 12345678',
+                        'Order No# ${cancelledOrders[index].orderId}',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -65,7 +69,7 @@ class CancelOrdersScreenWidget extends StatelessWidget {
                         width: 94,
                       ),
                       Text(
-                        '\$7.00 ',
+                        '\$${cancelledOrders[index].price }',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColor.primary,
@@ -99,7 +103,7 @@ class CancelOrdersScreenWidget extends StatelessWidget {
           ),
         ),
       ),
-      itemCount: 3,
+      itemCount: cancelledOrders.length,
     );
   }
 }

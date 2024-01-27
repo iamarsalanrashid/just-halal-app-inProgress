@@ -209,7 +209,7 @@ class TrackingOrderScreenWidget extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Provider.of<OrdersService>(context).cancelOrder(orderId);
+                      Provider.of<OrdersService>(context,listen: false).cancelOrder(orderItem.orderId);
                     },
                     child: Text(
                       'Cancel Orders',

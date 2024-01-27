@@ -129,8 +129,9 @@ class _TrackingOrderNavigationScreenState
                 child: CircularProgressIndicator(),
               )
             : RefreshIndicator(
-          onRefresh: () => Provider.of<OrdersService>(context).fetchandSetOrders(),
-              child: ListView(
+                onRefresh: () =>
+                    Provider.of<OrdersService>(context).fetchandSetOrders(),
+                child: ListView(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   children: [
@@ -183,7 +184,7 @@ class _TrackingOrderNavigationScreenState
                     ),
                   ],
                 ),
-            ),
+              ),
       ),
     );
   }
