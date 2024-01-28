@@ -35,6 +35,7 @@ import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'app_color.dart';
+import 'core/providers/auth.dart';
 import 'core/providers/cartService.dart';
 import 'core/providers/reviewService.dart';
 import 'firebase_options.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: ReviewService()),
         ChangeNotifierProvider.value(value: CartService()),
         ChangeNotifierProvider.value(value: OrdersService()),
+        ChangeNotifierProvider.value(value: Auth()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -13,6 +13,15 @@ class CreateNewPasswordScreen extends StatefulWidget {
 }
 
 class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
+
+  final _key = GlobalKey<FormState>();
+  String? _password;
+
+  void onSaved ( ) {
+    final isValid =  _key.currentState!.validate();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,7 +66,16 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                   fillColor: AppColor.border,
                   filled: true,
                 ),
-              ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Password field cannot be empty';
+                  } else if (value.length <= 6) {
+                    return ' The password should be atleast 6 characters long';
+                  }
+                },
+                onSaved: (newValue) {
+                  _password = newValue;
+                },),
               SizedBox(
                 height: 14,
               ),
@@ -76,7 +94,13 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                   fillColor: AppColor.border,
                   filled: true,
                 ),
-              ),
+                validator: (value) {
+                  if (value != _password) {
+                    return 'This Password doesnot matches the password you entered above';
+                  }
+                },
+                onSaved: (newValue) {
+                }, ),
               Container(
                 margin: EdgeInsets.only(top: 16),
                 child: ElevatedButton(

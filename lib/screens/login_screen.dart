@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:halal_app/screens/forgot_password_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
 import 'package:halal_app/screens/sign_up_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../app_color.dart';
+import '../core/providers/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
@@ -19,30 +21,35 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   String? _emailAddress;
   String? _password;
-
   bool _isLogin = true;
 
-  Future<void> logInUser() async {
-    final auth = FirebaseAuth.instance;
+
+
+  Future<void> onSaved(BuildContext context) async {
+    final isValid = _formKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _formKey.currentState!.save();
     try {
-      UserCredential authResult = await auth.createUserWithEmailAndPassword(
-          email: _emailAddress!.trim(), password: _password!.trim());
-      print(authResult.user!.uid);
+      Provider.of<Auth>(context, listen: false).authenticateUser(
+          userEmail: _emailAddress!.trim(),
+          password: _password!.trim(),
+          isLogin: false);
     } catch (error) {
       print(error);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          error.toString(),
+        ),
+        backgroundColor: Colors.cyan,
+      ));
+      return;
     }
-  }
-
-  void onSaved() async {
-    final _isvalidated = _formKey.currentState!.validate();
-    FocusScope.of(context).unfocus();
-    if (_isvalidated) {
-      _formKey.currentState!.save();
-      logInUser();
-      // widget.submitFn(_emailAddress!.trim(),_password!.trim(),_isLogin);
-    }
+    Navigator.of(context).pushNamed(LocationScreen.routeName);
   }
 
   @override
@@ -95,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   filled: true,
                 ),
                 validator: (value) {
-                  if (value!.isEmpty && !value.contains('@')) {
+                  if (!value!.contains('@') || value!.isEmpty ) {
                     return 'Please enter a valid Email';
                   }
                 },
@@ -154,11 +161,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
               ),
               ElevatedButton(
-                onPressed: () {
-                  onSaved();
-                  Navigator.of(context).pushNamed(LocationScreen.routeName);
+                onPressed: () {setState(() {
+                  _isLoading = true;
+                });
+                  onSaved(context
+                  ).then((value) { setState(() {
+                    _isLoading = false;
+
+
+                  });
+                  });
                 },
-                child: Text(
+                child: _isLoading? CircularProgressIndicator(color: Colors.white,) :Text(
                   'Sign In',
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
