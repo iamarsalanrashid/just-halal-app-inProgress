@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:halal_app/core/providers/foodService.dart';
 import 'package:halal_app/screens/forgot_password_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
 import 'package:halal_app/screens/sign_up_screen.dart';
@@ -9,9 +9,9 @@ import '../app_color.dart';
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
 
-   LoginScreen(this.submitFn);
-
-  void Function(String userEmail, String userPassword,bool isLogin) submitFn;
+  //  LoginScreen(this.submitFn);
+  //
+  // void Function(String userEmail, String userPassword,bool isLogin) submitFn;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,22 +19,32 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-String? _emailAddress;
-String? _password ;
-bool _isLogin = true ;
+  String? _emailAddress;
+  String? _password;
 
+  bool _isLogin = true;
 
-  void onSaved (  ) {
-final  _isvalidated = _formKey.currentState!.validate();
-FocusScope.of(context).unfocus();
-if(_isvalidated) {
-  _formKey.currentState!.save();
- widget.submitFn(_emailAddress!.trim(),_password!.trim(),_isLogin);
-
-}
+  Future<void> logInUser() async {
+    final auth = FirebaseAuth.instance;
+    try {
+      UserCredential authResult = await auth.createUserWithEmailAndPassword(
+          email: _emailAddress!.trim(), password: _password!.trim());
+      print(authResult.user!.uid);
+    } catch (error) {
+      print(error);
+    }
   }
-  
-  
+
+  void onSaved() async {
+    final _isvalidated = _formKey.currentState!.validate();
+    FocusScope.of(context).unfocus();
+    if (_isvalidated) {
+      _formKey.currentState!.save();
+      logInUser();
+      // widget.submitFn(_emailAddress!.trim(),_password!.trim(),_isLogin);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -84,12 +94,15 @@ if(_isvalidated) {
                   fillColor: AppColor.border,
                   filled: true,
                 ),
-             validator: (value) {
-if(value!.isEmpty && !value.contains('@')) {return 'Please enter a valid Email';}
-             },
+                validator: (value) {
+                  if (value!.isEmpty && !value.contains('@')) {
+                    return 'Please enter a valid Email';
+                  }
+                },
                 onSaved: (newValue) {
                   _emailAddress = newValue;
-                },),
+                },
+              ),
               SizedBox(
                 height: 16,
               ),
@@ -114,12 +127,16 @@ if(value!.isEmpty && !value.contains('@')) {return 'Please enter a valid Email';
                   filled: true,
                 ),
                 validator: (value) {
-                  if(value!.isEmpty) {return 'Password field cannot be empty';}
-                  else if(value.length <= 6) {return ' The password should be atleast 6 characters long';}
+                  if (value!.isEmpty) {
+                    return 'Password field cannot be empty';
+                  } else if (value.length <= 6) {
+                    return ' The password should be atleast 6 characters long';
+                  }
                 },
-              onSaved: (newValue) {
+                onSaved: (newValue) {
                   _password = newValue;
-              },),
+                },
+              ),
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -137,14 +154,14 @@ if(value!.isEmpty && !value.contains('@')) {return 'Please enter a valid Email';
                 alignment: Alignment.centerRight,
               ),
               ElevatedButton(
-                onPressed: ()  {
+                onPressed: () {
                   onSaved();
                   Navigator.of(context).pushNamed(LocationScreen.routeName);
                 },
                 child: Text(
                   'Sign In',
-                  style:
-                      TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primary,

@@ -16,6 +16,7 @@ import 'package:halal_app/screens/help_center_screen.dart';
 import 'package:halal_app/screens/home_screen.dart';
 import 'package:halal_app/screens/info_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
+import 'package:halal_app/screens/login_screen.dart';
 import 'package:halal_app/screens/meal_screen.dart';
 import 'package:halal_app/screens/new_address_screen.dart';
 import 'package:halal_app/screens/notifications_screen.dart';
@@ -118,7 +119,7 @@ class MyApp extends StatelessWidget {
           NotificationsScreen.routeName: (ctx) => NotificationsScreen(),
           NewAddressScreen.routeName: (ctx) => NewAddressScreen(),
           MealScreen.routeName: (ctx) => MealScreen(),
-          // LoginScreen.routeName: (ctx) => LoginScreen(),
+          LoginScreen.routeName: (ctx) => LoginScreen(),
           LocationScreen.routeName: (ctx) => LocationScreen(),
           InfoScreen.routeName: (ctx) => InfoScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
