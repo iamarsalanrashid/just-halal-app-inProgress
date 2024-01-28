@@ -1,8 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:halal_app/core/providers/foodService.dart';
 import 'package:halal_app/core/providers/ordersService.dart';
-import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/cart_screen.dart';
 import 'package:halal_app/screens/chat_screen.dart';
 import 'package:halal_app/screens/checkout_screen.dart';
@@ -16,16 +16,15 @@ import 'package:halal_app/screens/help_center_screen.dart';
 import 'package:halal_app/screens/home_screen.dart';
 import 'package:halal_app/screens/info_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
-import 'package:halal_app/screens/login_screen.dart';
 import 'package:halal_app/screens/meal_screen.dart';
 import 'package:halal_app/screens/new_address_screen.dart';
 import 'package:halal_app/screens/notifications_screen.dart';
 import 'package:halal_app/screens/orders_navigation_screen.dart';
 import 'package:halal_app/screens/otp_verification_2_screen.dart';
 import 'package:halal_app/screens/otp_verification_screen.dart';
+import 'package:halal_app/screens/page_switcher.dart';
 import 'package:halal_app/screens/payment_form_screen.dart';
 import 'package:halal_app/screens/payment_method_screen.dart';
-import 'package:halal_app/screens/processed_orders_navigation_screen.dart';
 import 'package:halal_app/screens/profile_screen.dart';
 import 'package:halal_app/screens/restaurant_screen.dart';
 import 'package:halal_app/screens/reviews_screen.dart';
@@ -35,13 +34,19 @@ import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'app_color.dart';
-import 'core/models/order.dart';
 import 'core/providers/cartService.dart';
 import 'core/providers/reviewService.dart';
+import 'firebase_options.dart';
 
-void main() {
+// ...
+
+void main() async {
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -54,7 +59,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   // This widget is the root of your application.
   @override
@@ -105,7 +109,7 @@ class MyApp extends StatelessWidget {
           ReviewsScreen.routeName: (ctx) => ReviewsScreen(),
           RestaurantScreen.routeName: (ctx) => RestaurantScreen(),
           ProfileScreen.routeName: (ctx) => ProfileScreen(),
-         // ProcessedOrdersNavigationScreen.routeName: (ctx) =>ProcessedOrdersNavigationScreen(),
+          // ProcessedOrdersNavigationScreen.routeName: (ctx) =>ProcessedOrdersNavigationScreen(),
           PaymentMethodScreen.routeName: (ctx) => PaymentMethodScreen(),
           PaymentFormScreen.routeName: (ctx) => PaymentFormScreen(),
           OtpVerificationScreen.routeName: (ctx) => OtpVerificationScreen(),
@@ -114,7 +118,7 @@ class MyApp extends StatelessWidget {
           NotificationsScreen.routeName: (ctx) => NotificationsScreen(),
           NewAddressScreen.routeName: (ctx) => NewAddressScreen(),
           MealScreen.routeName: (ctx) => MealScreen(),
-          LoginScreen.routeName: (ctx) => LoginScreen(),
+          // LoginScreen.routeName: (ctx) => LoginScreen(),
           LocationScreen.routeName: (ctx) => LocationScreen(),
           InfoScreen.routeName: (ctx) => InfoScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),

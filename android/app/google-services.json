@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "290452992296",
+    "firebase_url": "https://just-halal-b48e6-default-rtdb.firebaseio.com",
+    "project_id": "just-halal-b48e6",
+    "storage_bucket": "just-halal-b48e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290452992296:android:b01c11bb26287862b5e01d",
+        "android_client_info": {
+          "package_name": "com.aethon.halalapp.halal_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqFEHoIYP-n0fpACoAETmzOy_nDNx52XY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

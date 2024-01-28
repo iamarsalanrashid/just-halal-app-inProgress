@@ -30,7 +30,7 @@ class FoodService with ChangeNotifier {
             description: value['description']));
       });
       _items = loadedItems;
-    } catch (error) {
+    notifyListeners();} catch (error) {
       print(error);
     }
   }

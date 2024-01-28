@@ -82,7 +82,7 @@ class CartService with ChangeNotifier {
       });
 
       _items = loadedCartProducts;
-
+// notifyListeners();
       print(
           ' this is the list of cartitems in memmory ${loadedCartProducts.keys.toList()}');
     } catch (error) {
@@ -102,6 +102,7 @@ Future<void> MakeCartEmpty ( ) async {
     try {
       final  response = await http.delete(url);
       print(json.decode(response.body));
+      // notifyListeners();
     } catch (error) {
       print(error);
     }

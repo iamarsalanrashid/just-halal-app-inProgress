@@ -57,6 +57,7 @@ Future<void> addOrder(List<Cart> cartItems, double totalPrice) async {
             timeStamp: timestamp,
             orderStatus: 'Placed'));
     print('this is added order item: _items[0].orderId');
+    // notifyListeners();
   } catch (error) {
     print(error);
   }
@@ -129,6 +130,7 @@ Future<void> cancelOrder(String orderId) async {
         orderStatus: 'Cancelled');
     _cancelledOrders.add(cancelledOrder);
     _items.removeAt(orderItemIndex);
+    // notifyListeners();
     print(_items[orderItemIndex].orderStatus);
   } catch (error) {
     print(error);
