@@ -27,16 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void didChangeDependencies() {
-    if (!_isInit)
-    setState(() {
+    if (!_isInit) {setState(() {
       _isLoading = true;
     });
-    Provider.of<FoodService>(context).getMeals().then((_) {
+    Provider.of<FoodService>(context,listen : false).getMeals().then((_) {
       setState(() {
         _isLoading = false;
       });
-    });
+    });}
+
     _isInit = true;
+
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
@@ -44,9 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final foodData = Provider.of<FoodService>(context);
-    final foodItems = Provider.of<FoodService>(context).items;
-    final ReviewData = Provider.of<ReviewService>(context).items;
+    final foodData = Provider.of<FoodService>(context,listen: false);
+    final foodItems = Provider.of<FoodService>(context,listen: false).items;
+    final ReviewData = Provider.of<ReviewService>(context,listen: false).items;
     final cartData = Provider.of<CartService>(context,listen: true);
 
     final height = MediaQuery.of(context).size.height;

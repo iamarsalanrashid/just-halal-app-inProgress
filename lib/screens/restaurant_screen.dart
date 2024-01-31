@@ -23,8 +23,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final BurgersData = Provider.of<FoodService>(context);
-    final ReviewData = Provider.of<ReviewService>(context);
+    final BurgersData = Provider.of<FoodService>(context,listen: false);
+    final ReviewData = Provider.of<ReviewService>(context,listen: false);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return SafeArea(

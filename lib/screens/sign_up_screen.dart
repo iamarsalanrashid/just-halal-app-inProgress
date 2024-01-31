@@ -183,7 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   margin: EdgeInsets.only(top: 14, bottom: 14),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(LocationScreen.routeName);
+                      Navigator.of(context).pushNamed(LoginScreen.routeName);
                     },
                     child: Text(
                       'Sign Up',

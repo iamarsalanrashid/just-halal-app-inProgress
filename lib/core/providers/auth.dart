@@ -14,6 +14,15 @@ class Auth with ChangeNotifier {
       if (isLogin) {
         UserCredential authResult = await auth.createUserWithEmailAndPassword(
             email: userEmail, password: password);
+        User? user =authResult.user;
+        if (user != null && user.emailVerified) {
+          // User has an account and is logged in
+        } else {
+          // User doesn't have an account, handle accordingly
+          print("User doesn't have an account.");
+          return;
+        }
+
       } else {
         UserCredential authResult = await auth.signInWithEmailAndPassword(
             email: userEmail, password: password);

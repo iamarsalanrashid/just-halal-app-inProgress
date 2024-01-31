@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:halal_app/screens/forgot_password_screen.dart';
 import 'package:halal_app/screens/location_screen.dart';
 import 'package:halal_app/screens/sign_up_screen.dart';
@@ -38,8 +39,15 @@ class _LoginScreenState extends State<LoginScreen> {
       Provider.of<Auth>(context, listen: false).authenticateUser(
           userEmail: _emailAddress!.trim(),
           password: _password!.trim(),
-          isLogin: false);
-    } catch (error) {
+          isLogin: false).then((value) =>  Navigator.of(context).pushNamed(LocationScreen.routeName));
+    } on PlatformException catch(platErr) { print(platErr);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        platErr.toString(),
+      ),
+      backgroundColor: Colors.cyan,
+    ));}
+    catch (error) {
       print(error);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -49,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ));
       return;
     }
-    Navigator.of(context).pushNamed(LocationScreen.routeName);
+
   }
 
   @override

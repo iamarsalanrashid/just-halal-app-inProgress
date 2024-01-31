@@ -25,15 +25,15 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void didChangeDependencies() {
-    if (!_isInit)
-      setState(() {
-        _isLoading = true;
-      });
+    if (!_isInit) {setState(() {
+      _isLoading = true;
+    });
     Provider.of<CartService>(context).fetchAndSetCartItems().then((_) {
       setState(() {
         _isLoading = false;
       });
-    });
+    });}
+
     _isInit = true;
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
