@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:halal_app/core/providers/auth.dart';
-import 'package:halal_app/screens/location_screen.dart';
 import 'package:halal_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -22,16 +21,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _phoneNumber;
   String? _password;
 
-  void onSaved() {
+  void onSaved(BuildContext ctx) {
     final isValid = _key.currentState!.validate();
     if (!isValid) {
       return;
     }
     try {
-      Provider.of<Auth>(context, listen: false).authenticateUser(
-          userEmail: _emailAddress!.trim(),
-          password: _password!.trim(),
-          isLogin: false);
+      Provider.of<Auth>(context, listen: false)
+          .authenticateUser(
+              userEmail: _emailAddress!.trim(),
+              password: _password!.trim(),
+              isLogin: false,
+      ctx: ctx)
+          .then((_){});
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -183,6 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   margin: EdgeInsets.only(top: 14, bottom: 14),
                   child: ElevatedButton(
                     onPressed: () {
+                      onSaved(context);
                       Navigator.of(context).pushNamed(LoginScreen.routeName);
                     },
                     child: Text(

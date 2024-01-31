@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../app_color.dart';
 import '../core/providers/cartService.dart';
 import '../core/providers/foodService.dart';
-import '../core/providers/reviewService.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home-screen';
@@ -23,36 +22,31 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
-  bool _isInit = false;
+  bool _isInit = true;
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {setState(() {
-      _isLoading = true;
-    });
-    Provider.of<FoodService>(context,listen : false).getMeals().then((_) {
+    if (_isInit) {
       setState(() {
-        _isLoading = false;
+        _isLoading = true;
       });
-    });}
-
-    _isInit = true;
+      Provider.of<FoodService>(context, listen: false).getMeals().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
 
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final foodData = Provider.of<FoodService>(context,listen: false);
-    final foodItems = Provider.of<FoodService>(context,listen: false).items;
-    final ReviewData = Provider.of<ReviewService>(context,listen: false).items;
-    final cartData = Provider.of<CartService>(context,listen: true);
-
-    final height = MediaQuery.of(context).size.height;
+    final foodData = Provider.of<FoodService>(context, listen: true);
+    final foodItems = foodData.items;
     final width = MediaQuery.of(context).size.width;
-    print(cartData.items.keys.toList().length);
     print(width);
     return SafeArea(
       child: Scaffold(
@@ -118,13 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.of(context)
                                   .pushNamed(CartScreen.routeName);
                             },
-                            child: Badge(
-                              backgroundColor: AppColor.primary,
-                              label: Text(
-                                  cartData.items.keys.toList().length.toString()),
-                              child: Icon(
-                                Icons.shopping_bag_outlined,
-                                // size: 34,
+                            child: Consumer<CartService>(
+                              builder: (context, cart, child) => Badge(
+                                backgroundColor: AppColor.primary,
+                                label: Text(
+                                  cart.items.length.toString(),
+                                ),
+                                child: Icon(
+                                  Icons.shopping_bag_outlined,
+                                  // size: 34,
+                                ),
                               ),
                             ),
                           )
@@ -207,7 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 150,
                             child: Text(
                               'Special deal for mothers day',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
                           SizedBox(
@@ -237,7 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Positioned(
                     top: -25,
-                    child: Image.asset('assets/images/home_images/pngwing 1.png'),
+                    child:
+                        Image.asset('assets/images/home_images/pngwing 1.png'),
                   ),
                 ],
               ),
@@ -257,27 +256,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(left: 16),
                 width: width,
                 height: 220,
-                child: _isLoading ? Center(child: CircularProgressIndicator(),) : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(MealScreen.routeName,
-                          arguments: foodItems[index].id);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        right: 16,
-                      ),
-                      height: 220,
-                      width: 160,
-                      child: DealItem(foodItems[index].id, foodItems[index].name,
-                          foodItems[index].price
-                          // cartData.addItem(foodItems[index].id,foodItems[index].name,foodItems[index].price)
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                MealScreen.routeName,
+                                arguments: foodItems[index].id);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              right: 16,
+                            ),
+                            height: 220,
+                            width: 160,
+                            child: DealItem(foodItems[index].id,
+                                foodItems[index].name, foodItems[index].price
+                                // cartData.addItem(foodItems[index].id,foodItems[index].name,foodItems[index].price)
+                                ),
                           ),
-                    ),
-                  ),
-                  itemCount: foodItems.length,
-                ),
+                        ),
+                        itemCount: foodItems.length,
+                      ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(

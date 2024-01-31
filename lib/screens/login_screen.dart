@@ -29,37 +29,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
 
-  Future<void> onSaved(BuildContext context) async {
+  Future<void> onSaved(BuildContext ctx) async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
     _formKey.currentState!.save();
     try {
-      Provider.of<Auth>(context, listen: false).authenticateUser(
+      Provider.of<Auth>(context, listen: false)
+          .authenticateUser(
           userEmail: _emailAddress!.trim(),
           password: _password!.trim(),
-          isLogin: false).then((value) =>  Navigator.of(context).pushNamed(LocationScreen.routeName));
-    } on PlatformException catch(platErr) { print(platErr);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        platErr.toString(),
-      ),
-      backgroundColor: Colors.cyan,
-    ));}
-    catch (error) {
-      print(error);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          isLogin: true,ctx : ctx).then((_){ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully Logged In'),backgroundColor: Colors.green,));
+          Navigator.of(context).pushNamed(LocationScreen.routeName);});
+    } catch (error) {
+      print('A general error from login screen: $error');
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
         content: Text(
           error.toString(),
         ),
         backgroundColor: Colors.cyan,
       ));
-      return;
+
     }
-
   }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   filled: true,
                 ),
                 validator: (value) {
-                  if (!value!.contains('@') || value!.isEmpty ) {
+                  if (!value!.contains('@') || value!.isEmpty) {
                     return 'Please enter a valid Email';
                   }
                 },
@@ -169,22 +162,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
               ),
               ElevatedButton(
-                onPressed: () {setState(() {
-                  _isLoading = true;
-                });
-                  onSaved(context
-                  ).then((value) { setState(() {
-                    _isLoading = false;
-
-
+                onPressed: () {
+                  setState(() {
+                    _isLoading = true;
                   });
+                  onSaved(context).then((value) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                   });
                 },
-                child: _isLoading? CircularProgressIndicator(color: Colors.white,) :Text(
-                  'Sign In',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : Text(
+                        'Sign In',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primary,
                   shape: RoundedRectangleBorder(

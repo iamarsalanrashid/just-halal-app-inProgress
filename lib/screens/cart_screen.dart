@@ -25,14 +25,16 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {setState(() {
-      _isLoading = true;
-    });
-    Provider.of<CartService>(context).fetchAndSetCartItems().then((_) {
+    if (!_isInit) {
       setState(() {
-        _isLoading = false;
+        _isLoading = true;
       });
-    });}
+      Provider.of<CartService>(context).fetchAndSetCartItems().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
 
     _isInit = true;
     // TODO: implement didChangeDependencies
@@ -43,11 +45,8 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final cartData = Provider.of<CartService>(context, listen: true);
     final Map<String, Cart> cartItems =
-        Provider.of<CartService>(context, listen: true).items;
-    final orderData = Provider.of<OrdersService>(context);
-
+        cartData.items;
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       bottomNavigationBar: Container(
         height: 60,

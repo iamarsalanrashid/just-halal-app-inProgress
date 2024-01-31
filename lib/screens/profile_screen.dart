@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:halal_app/core/providers/auth.dart';
 import 'package:halal_app/screens/chat_screen.dart';
 import 'package:halal_app/screens/login_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../app_color.dart';
 
@@ -122,7 +125,13 @@ class ProfileScreen extends StatelessWidget {
           Divider(),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(LoginScreen.routeName);
+             try { Provider.of<Auth>(context,listen: false).logOut(ctx: context).then((_) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully logged out')));
+             //  Navigator.of(context).pushNamed(LoginScreen.routeName);
+             });} on FirebaseAuthException catch ( error) {
+               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something went wrong ${error.message.toString()}')));
+
+               throw error;}
+
 
             },
             child: Container(

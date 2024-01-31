@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:halal_app/core/providers/foodService.dart';
 import 'package:halal_app/core/providers/ordersService.dart';
 import 'package:halal_app/screens/tracking_order_navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_color.dart';
-import '../processed_orders_navigation_screen.dart';
 
 class ActiveOrdersScreenWidget extends StatefulWidget {
   const ActiveOrdersScreenWidget({super.key});
@@ -32,8 +30,7 @@ class _ActiveOrdersScreenWidgetState extends State<ActiveOrdersScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final orderData = Provider.of<OrdersService>(context);
-    final orderitems = Provider.of<OrdersService>(context).items;
+    final orderitems = Provider.of<OrdersService>(context, listen: true).items;
     return _isLoading
         ? Center(
             child: CircularProgressIndicator(),

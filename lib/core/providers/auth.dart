@@ -9,29 +9,44 @@ class Auth with ChangeNotifier {
   Future<void> authenticateUser(
       {required String userEmail,
       required String password,
-      required bool isLogin}) async {
+      required bool isLogin,
+      required BuildContext ctx}) async {
     try {
-      if (isLogin) {
+      if (!isLogin) {
         UserCredential authResult = await auth.createUserWithEmailAndPassword(
             email: userEmail, password: password);
-        User? user =authResult.user;
+        User? user = authResult.user;
         if (user != null && user.emailVerified) {
-          // User has an account and is logged in
         } else {
-          // User doesn't have an account, handle accordingly
           print("User doesn't have an account.");
-          return;
         }
-
       } else {
         UserCredential authResult = await auth.signInWithEmailAndPassword(
             email: userEmail, password: password);
         print(authResult.user!.uid);
       }
-
       notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      var message = 'sorry the credentials are invalid';
+      if (e.message != null) {
+        message = e.message.toString();
+      }
+      print('platform error: ${message}');
+      ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(content: Text('An error occurred: $message '),backgroundColor: Colors.red,));
+      throw e;
     } catch (error) {
-      throw (error);
+      print('connection error: $error');
+      throw error;
+    }
+  }
+
+  Future<void> logOut({required ctx}) async {
+    try {
+      await auth.signOut();
+    } on FirebaseAuthException catch (e) {
+
+      throw e;
     }
   }
 
