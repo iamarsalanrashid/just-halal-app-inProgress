@@ -126,10 +126,9 @@ class ProfileScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
              try { Provider.of<Auth>(context,listen: false).logOut(ctx: context).then((_) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully logged out')));
-             //  Navigator.of(context).pushNamed(LoginScreen.routeName);
-             });} on FirebaseAuthException catch ( error) {
-               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something went wrong ${error.message.toString()}')));
-
+              Navigator.of(context).pushNamed(LoginScreen.routeName);
+             });} catch ( error) {
+               print(error);
                throw error;}
 
 

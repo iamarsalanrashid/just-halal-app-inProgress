@@ -33,14 +33,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               password: _password!.trim(),
               isLogin: false,
       ctx: ctx)
-          .then((_){});
+          .then((_){
+            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully signed Up'),backgroundColor: Colors.green,));});
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          error.toString(),
-        ),
-        backgroundColor: Colors.cyan,
-      ));
+      print(error);
+      throw error;
     }
   }
 
