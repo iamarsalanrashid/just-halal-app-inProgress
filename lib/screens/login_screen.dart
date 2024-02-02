@@ -36,11 +36,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     _formKey.currentState!.save();
     try {
+
       Provider.of<Auth>(context, listen: false)
           .authenticateUser(
           userEmail: _emailAddress!.trim(),
           password: _password!.trim(),
-          isLogin: true,ctx : ctx).then((_){ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully Logged In'),backgroundColor: Colors.green,));
+          isLogin: true,ctx : ctx).then((_){
+        Provider.of<Auth>(context, listen: false)
+            .fetchUserProfile();ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully Logged In'),backgroundColor: Colors.green,));
           Navigator.of(context).pushNamed(LocationScreen.routeName);});
     } catch (error) {
       print('A general error from login screen: $error');
@@ -83,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               TextFormField(
                 autofocus: false,
-                obscureText: true,
+                obscureText: false,
                 decoration: InputDecoration(
                   label: Text('Email'),
                   focusedBorder: OutlineInputBorder(

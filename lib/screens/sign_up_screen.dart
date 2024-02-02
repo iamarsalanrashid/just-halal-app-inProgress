@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:halal_app/core/models/userProfile.dart';
 import 'package:halal_app/core/providers/auth.dart';
 import 'package:halal_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../app_color.dart';
 
@@ -21,20 +24,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _phoneNumber;
   String? _password;
 
-  void onSaved(BuildContext ctx) {
+  void onSaved(BuildContext ctx) async {
+
     final isValid = _key.currentState!.validate();
     if (!isValid) {
       return;
     }
+    _key.currentState!.save();
     try {
-      Provider.of<Auth>(context, listen: false)
-          .authenticateUser(
+      final authData =Provider.of<Auth>(context,listen: false);
+      authData.authenticateUser(
               userEmail: _emailAddress!.trim(),
               password: _password!.trim(),
               isLogin: false,
       ctx: ctx)
-          .then((_){
-            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully signed Up'),backgroundColor: Colors.green,));});
+          .then((_) async {
+            final userId = FirebaseAuth.instance.currentUser!.uid;
+            UserProfile newUser;
+            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Successfully signed Up'),backgroundColor: Colors.green,));
+
+            await FirebaseFirestore.instance.collection('users').doc(userId).set(
+                { 'userId': userId ,
+                  'userName' : _fullName!.trim().toString(),
+                  'email': _emailAddress!.trim().toString(),
+                  'phoneNumber' : _phoneNumber!.trim(),
+                  'address':'Not Known',
+                  'paymentMethod': 'Paypal'});
+            Provider.of<Auth>(context,listen: false).currentUser = UserProfile(userId: userId, userName:  _fullName!.trim().toString(), email: _emailAddress!.trim().toString(), phoneNumber: int.parse(_phoneNumber!.trim()), address: 'Paypal');
+            Navigator.of(context).pushNamed(LoginScreen.routeName);
+          });
+
+
     } catch (error) {
       print(error);
       throw error;
@@ -62,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     )),
                 TextFormField(
                   autofocus: false,
-                  obscureText: true,
+                  obscureText: false,
                   decoration: InputDecoration(
                     label: Text('Email'),
                     focusedBorder: OutlineInputBorder(
@@ -121,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 14,
                 ),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: false,
                   decoration: InputDecoration(
                     label: Text('Phone Number'),
                     focusedBorder: OutlineInputBorder(
@@ -181,9 +201,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   margin: EdgeInsets.only(top: 14, bottom: 14),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: ()  {
+
                       onSaved(context);
-                      Navigator.of(context).pushNamed(LoginScreen.routeName);
+
                     },
                     child: Text(
                       'Sign Up',

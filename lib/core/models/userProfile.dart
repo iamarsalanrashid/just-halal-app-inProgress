@@ -4,14 +4,16 @@ class UserProfile {
   final String userId;
   final String userName;
   final String email;
+  final int phoneNumber;
   final String address;
-  PaymentMethod paymentMethod;
+  final String  paymentMethod;
 
-  UserProfile(
-     {
+  UserProfile({
     required this.userId,
     required this.userName,
     required this.email,
+    required this.phoneNumber,
     required this.address,
-       this.paymentMethod= PaymentMethod.Paypal,});
+    this.paymentMethod = 'Paypal',
+  });
 }
